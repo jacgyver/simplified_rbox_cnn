@@ -184,7 +184,7 @@ def inference(pipeline_config_path, ckpt_path, image_dir, dst_path, patch_size, 
     with tf.Session(graph=graph) as sess:
         # Load weights from a checkpoint file
         variables_to_restore = tf.global_variables()
-        saver = tf.train.Saver(variables_to_restore)
+        saver = tf.compat.v1.train.Saver(variables_to_restore)
         saver.restore(sess, ckpt_path)
 
         # Get tensors of detection model
