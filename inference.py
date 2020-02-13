@@ -35,12 +35,12 @@ def get_detection_graph(pipeline_config_path):
     """
 
     pipeline_config = pipeline_pb2.TrainEvalPipelineConfig()
-    with tf.gfile.GFile(pipeline_config_path, 'r') as f:
+    with tf.io.gfile.GFile(pipeline_config_path, 'r') as f:
         text_format.Merge(f.read(), pipeline_config)
 
     detection_model = model_builder.build(pipeline_config.model, is_training=False)
-    input_tensor = tf.placeholder(dtype=tf.uint8, shape=(None, None, None, 3), name='image_tensor')
-    inputs = tf.to_float(input_tensor)
+    input_tensor = tf.compat.v1.placeholder(dtype=tf.uint8, shape=(None, None, None, 3), name='image_tensor')
+    inputs = tf.cast(input_tensor)
     preprocessed_inputs = detection_model.preprocess(inputs)
     output_tensors = detection_model.predict(preprocessed_inputs)
     postprocessed_tensors = detection_model.postprocess(output_tensors)
